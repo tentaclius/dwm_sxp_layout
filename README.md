@@ -107,10 +107,10 @@ static Window root, wmcheckwin;
 static int restart = 0;
 
 /*=== s_layout ===*/
-include "s_layout.c"
+#include "s_layout.c"
 
 /* configuration, allows nested code to access above variables */
-include "config.h"
+#include "config.h"
 ...
 ```
 
