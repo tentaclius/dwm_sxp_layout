@@ -10,6 +10,7 @@ The syntax is basically s-expressions with outermost parentheses removed for con
 
 I tried to keep the code simple in the spirit of DWM, but in the end I decided to keep it as a separate file just so
 it is easier to modify, test and distribute.
+
 # Current state
 
 It works. More tesing is needed and I still have a few items in my TODO. In particular, it does not take window margin
@@ -24,6 +25,9 @@ TODO:
 - Perhaps, some syntax improvements, e.g. replace `(nth ...)` with something quicker.
 
 # Examples
+
+See screencasts at the end of the README for some live examples.
+Here are some text examples.
 
 `h c (v ...)`
 Simple tile layout.
@@ -138,3 +142,14 @@ static const Layout layouts[] = {
    ...
 ```
 
+# Screencast 1
+
+Playing around with simple layouts.
+
+![](Screencast-1.gif)
+
+# Screencast 2
+
+Creating a floating viewport.
+
+![](Screencast-2.gif)
