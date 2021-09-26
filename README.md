@@ -1,5 +1,4 @@
 # Introduction
-
 This extension allows you to create a custom layout using simplified s-expressions.
 It allows the user to enter the layout description using dmenu and creates the corresponding dynamic layout.
 
@@ -11,7 +10,6 @@ The syntax is basically s-expressions with outermost parentheses removed for con
 
 I tried to keep the code simple in the spirit of DWM, but in the end I decided to keep it as a separate file just so
 it is easier to modify, test and distribute.
-
 # Current state
 
 It works. More tesing is needed and I still have a few items in my TODO. In particular, it does not take window margin
