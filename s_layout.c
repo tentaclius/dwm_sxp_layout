@@ -364,17 +364,12 @@ void s_recur_resize(node_t *node, struct frame_t frame)
       }
 
       for (node_t *n = node->branch; n != NULL; n = n->next) {
-         if (!node->f) {
+         if (!n->f) {
             frame.h = (n->weight == 0 ? 1 : n->weight) / avg_wgt * delta;
             s_recur_resize(n, frame);
             frame.y += frame.h;
          } else {
-            struct frame_t ff;
-            ff.x = node->x;
-            ff.y = node->y;
-            ff.w = node->w;
-            ff.h = node->h;
-            s_recur_resize(n, ff);
+            s_recur_resize(n, frame);
          }
       }
       return;
@@ -393,9 +388,13 @@ void s_recur_resize(node_t *node, struct frame_t frame)
       }
 
       for (node_t *n = node->branch; n != NULL; n = n->next) {
-         frame.w = (n->weight == 0 ? 1 : n->weight) / avg_wgt * delta;
-         s_recur_resize(n, frame);
-         frame.x += frame.w;
+         if (!n->f) {
+            frame.w = (n->weight == 0 ? 1 : n->weight) / avg_wgt * delta;
+            s_recur_resize(n, frame);
+            frame.x += frame.w;
+         } else {
+            s_recur_resize(n, frame);
+         }
       }
       return;
    }
