@@ -97,8 +97,8 @@ Custom geometry, a.k.a. floating viewport. Can be a part of any container. Does 
 
 The patch is coming soon. For now the installation is manual, but should not be too difficult anyway.
 
-## 1. Copy the s_layout.c file into the DWM folder.
-## 2. Include it from dwm.c before including *config.h*
+## 1. Copy the *s_layout.c* file into the DWM folder.
+## 2. Include it from *dwm.c* before including *config.h*
 ```
 ...
 static Drw *drw;
