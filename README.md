@@ -88,7 +88,7 @@ Provides a space for at most `<number>` clients in a container.
 The rest of the clients from the client stack.
 
 ## Node parameters
-`w: `<number>``  
+`w: <number>`  
 Weight. Affects the amount of space the node takes relative to its neighbours.
 
 `f: <x> <y> <width> <height>`  
