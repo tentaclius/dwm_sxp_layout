@@ -1,4 +1,5 @@
 # Introduction
+
 This extension allows you to create a custom layout using simplified s-expressions.
 It allows the user to enter the layout description using dmenu and creates the corresponding dynamic layout.
 
@@ -29,7 +30,7 @@ TODO:
 See screencasts at the end of the README for some live examples.
 Here are some text examples.
 
-`h c (v ...)`
+`h c (v ...)`  
 Simple tile layout.
 
 `m ...`  
@@ -55,42 +56,42 @@ WARNING: In this setup the other clients will be left untouched from the
 
 # Syntax
 ## Containers
-**(h ...)**  
+`(h ...)`  
 Horizontal spread.
 The nodes are distributed horizontally, according to the weight of each one.
 
-**(hr ...)**
+`(hr ...)`
 Reversed horizontal layout (clients are filled from right to left).
 
-**(v ...)**  
+`(v ...)`  
 Vertical spread.
 The nodes are distributed vertically, according to the weight of each one.
 
-**(vr ...)**
+`(vr ...)`  
 Reversed vertical layout. Clients are filled from bottom to top.
 
-**(m ...)**  
+`(m ...)`  
 "Monocle". All clients share the same geometry.
 
 ## Elements
-**c**  
+`c`  
 A slot for a single client. 
 
-**(nth `<number>`)**  
+`(nth <number>)`  
 Pick a client from the client stack by the number.
 `(nth 0)` represents the first client, `(nth 1)` - the second etc.
 
-**(max `<number>`)**  
+`(max <number>)`  
 Provides a space for at most `<number>` clients in a container.
 
-**...**  
+`...`  
 The rest of the clients from the client stack.
 
 ## Node parameters
-**w: `<number>`**  
+`w: `<number>``  
 Weight. Affects the amount of space the node takes relative to its neighbours.
 
-**f: `<x> <y> <width> <height>`**  
+`f: <x> <y> <width> <height>`  
 Custom geometry, a.k.a. floating viewport. Can be a part of any container. Does not take the container's space.
 
 # Installation and configuration
