@@ -100,7 +100,7 @@ The patch is coming soon. For now the installation is manual, but should not be 
 
 ## 1. Copy the *s_layout.c* file into the DWM folder.
 ## 2. Include it from *dwm.c* before including *config.h*
-```
+```c
 ...
 static Drw *drw;
 static Monitor *mons, *selmon;
@@ -116,7 +116,7 @@ static int restart = 0;
 ```
 
 ## 3. Add the layout to the layout list in your config.h:  
-```
+```c
 static const Layout layouts[] = {
    /* symbol     arrange function */
    { "[]=",      tile },    /* first entry is default */
@@ -130,7 +130,7 @@ static const Layout layouts[] = {
 ```
 
 ## 4. Add hotkeys for setlayout and set_s_layout functions (set_s_layout will open dmenu so you can type the layout in, whereas setlayout will just switch you to the existing sxp layout):
-```
+```c
    ...
    { MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
    { MODKEY,                       XK_m,      setlayout,      {.v = &layouts[1]} },
