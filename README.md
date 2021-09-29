@@ -36,13 +36,38 @@ Simple tile layout.
 `m ...`  
 Monocle.
 
-`h (c w: 1.5) (v c (m ...))`  
+```
+h (c w: 1.5) (v c (m ...))
+|  |          | |  |  \_ all the leftover windows will be put here
+|  |          | |  \_ monocle node (all windows under it will occupy the same frame)
+|  |          | \_ single client 
+|  |          \_ vertical layout node
+|  \_ a place for one client with weight of 1.5 relative to its neighbours
+\_ horizontal layout node
+```  
 Tiling layout with weighted main viewport (1.5 times the neighbours).
 The stack area is limited with two clients. The leftover windows will occupy the right bottom frame.
 
-`h (v w: 1.2 (c w: 1.2) 1) (v ...)`  
+```
+h (v w: 1.2 (c w: 1.2) c) (v ...)
+|  |         |         |   |  \_ all the leftover clients goes here
+|  |         |         |   \_ vertical node
+|  |         |         \_ another client (default weight is 1)
+|  |         \_ a single client with weight of 1.2
+|  \_ vertical node with weight of 1.2 (relative to its neighbours from the horizontal parent node)
+\_ horizontal distribution node
+```  
 Two windows in the master area. The master column is 1.2 times width the stack column and the first window is 1.2 times
 the height of the second one.
+
+```
+h (c f: 200 200 900 700) (nth 1) (m ...))
+|  |                      |       |  \_ all other clients
+|  |                      |       \_ monocle layout
+|  |                      \_ get the second client from the leftover client list (we already allocated space for one client, so (nth 1) in fact will refer to 2-nd client
+|  \_ a slot for a single client with custom geometry (floating); it will not occupy the space from the parent h layout
+\_ horizontal layout
+```  
 
 `v ...`  
 All clients arranged in a single column.
