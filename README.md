@@ -20,6 +20,7 @@ setting into account.
 TODO:
 
 - Support for windows margin/borders.
+- Add an empty frame placeholder.
 - Floating configuration for the containers (h, v, m). Currently the floating mode only works for **c** element.
 - Empty container to hide the leftover windows.
 - Provide a reasonable default for sxp layout.
