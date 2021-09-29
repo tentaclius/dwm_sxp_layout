@@ -129,7 +129,8 @@ static const Layout layouts[] = {
 };
 ```
 
-## 4. Add hotkeys for setlayout and set_s_layout functions (set_s_layout will open dmenu so you can type the layout in, whereas setlayout will just switch you to the existing sxp layout):
+## 4. Add hotkeys for setlayout and set_s_layout functions.
+set_s_layout will open dmenu so you can type the new layout in (don't forget to use Shift+Enter to override dmenu's hints), whereas setlayout will just switch you to the existing sxp layout.
 ```c
    ...
    { MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
