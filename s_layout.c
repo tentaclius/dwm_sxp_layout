@@ -79,7 +79,7 @@ struct client_ref_t
    struct client_ref_t *next;
 };
 
-node_t *s_layout_scheme;
+static node_t *s_layout_scheme;
 
 node_t* alloc_node(enum node_type_t type)
 {
@@ -656,8 +656,7 @@ node_t* parse_sexp(struct string_token_t **token)
 void set_s_layout(const Arg *arg)
 {
    // make sure the history file exists
-   FILE *hf = fopen(SXP_HISTORY, "a");
-   fclose(hf);
+   FILE *hf = fopen(SXP_HISTORY, "a"); fclose(hf);
    system("sort " SXP_HISTORY " | uniq > " SXP_HISTORY "~");
    system("mv " SXP_HISTORY "~ " SXP_HISTORY);
 
