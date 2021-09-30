@@ -19,10 +19,10 @@ setting into account.
 
 TODO
 - [x] Add an empty frame placeholder.
-- [ ] Custom window margins.
-- [ ] Support for windows margin/borders.
+- [x] Support for windows margin/borders.
+- [x] Custom window margins.
 - [ ] Floating configuration for the containers (h, v, m). Currently the floating mode only works for **c** element.
-- [ ] Empty container to hide the leftover windows.
+- [ ] Void container to hide the leftover windows.
 - [ ] Provide a reasonable default for sxp layout.
 - [ ] Perhaps, some syntax improvements, e.g. replace `(nth ...)` with something quicker.
 
@@ -83,28 +83,28 @@ WARNING: In this setup the other clients will be left untouched from the
 
 # Syntax
 ## Containers
-`(h ...)`  
+`(h ...)` or `(horizontal ...)`  
 Horizontal spread.
 The nodes are distributed horizontally, according to the weight of each one.
 
-`(hr ...)`
+`(hr ...)` or `(h-reversed ...)`  
 Reversed horizontal layout (clients are filled from right to left).
 
-`(v ...)`  
+`(v ...)` or `(vertical ...)`  
 Vertical spread.
 The nodes are distributed vertically, according to the weight of each one.
 
-`(vr ...)`  
+`(vr ...)` or `(v-reversed)`  
 Reversed vertical layout. Clients are filled from bottom to top.
 
-`(m ...)`  
+`(m ...)` or `(monocle ...)`  
 "Monocle". All clients share the same geometry.
 
 ## Elements
-`c`  
+`c` or `client`  
 A slot for a single client. 
 
-`e`  
+`e` or `empty`  
 An empty viewport. A visual space will be allocated, but no client will be assigned to it.
 
 `(nth <number>)`  
@@ -114,14 +114,14 @@ Pick a client from the client stack by the number.
 `(max <number>)`  
 Provides a space for at most `<number>` clients in a container.
 
-`...`  
+`...` or `rest`  
 The rest of the clients from the client stack.
 
 ## Node parameters
-`w: <number>`  
+`w: <number>` or `weight: <number>`  
 Weight. Affects the amount of space the node takes relative to its neighbours.
 
-`f: <x> <y> <width> <height>`  
+`f: <x> <y> <width> <height>` or `float: <x> <y> <width> <height>`  
 Custom geometry, a.k.a. floating viewport. Can be a part of any container. Does not take the container's space.
 
 # Installation and configuration

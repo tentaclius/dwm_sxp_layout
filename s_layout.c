@@ -69,6 +69,7 @@ struct node_t
    int x, y, w, h;
    int f;
    unsigned n;
+   unsigned margin;
    Client *c;
    struct node_t *branch;
    struct node_t *next;
@@ -103,6 +104,7 @@ node_t* clone_node(node_t *n)
    node->h = n->h;
    node->f = n->f;
    node->n = n->n;
+   node->margin = n->margin;
    node->c = n->c;
    node->next = NULL;
    node->branch = NULL;
@@ -358,7 +360,12 @@ void s_recur_resize(node_t *node, struct frame_t frame)
          if (node->f)
             resize(node->c, node->x, node->y, node->w, node->h, 0);
          else
-            resize(node->c, frame.x, frame.y, frame.w, frame.h, 0);
+            resize(node->c,
+                  frame.x + node->margin,
+                  frame.y + node->margin,
+                  frame.w - 2 * node->margin - 2 * node->c->bw,
+                  frame.h - 2 * node->margin - 2 * node->c->bw,
+                  0);
       }
       return;
    }
@@ -368,6 +375,11 @@ void s_recur_resize(node_t *node, struct frame_t frame)
       float wgt = 0.0;
       int delta = 0;
       float avg_wgt = 1;
+
+      frame.x += node->margin;
+      frame.y += node->margin;
+      frame.w -= 2 * node->margin;
+      frame.h -= 2 * node->margin;
       
       node_length(node->branch, &len, &wgt);
       if (len != 0) {
@@ -392,6 +404,11 @@ void s_recur_resize(node_t *node, struct frame_t frame)
       float wgt = 0.0;
       int delta = 0;
       float avg_wgt = 1;
+
+      frame.x += node->margin;
+      frame.y += node->margin;
+      frame.w -= 2 * node->margin;
+      frame.h -= 2 * node->margin;
       
       node_length(node->branch, &len, &wgt);
       if (len != 0) {
@@ -412,6 +429,11 @@ void s_recur_resize(node_t *node, struct frame_t frame)
    }
 
    if (node->type == ND_MONOCLE) {
+      frame.x += node->margin;
+      frame.y += node->margin;
+      frame.w -= 2 * node->margin;
+      frame.h -= 2 * node->margin;
+
       for (node_t *n = node->branch; n != NULL; n = n->next)
          s_recur_resize(n, frame);
    }
@@ -550,7 +572,7 @@ node_t* parse_sexp(struct string_token_t **token)
 
       // ==== Client slots
       // Single client
-      if (strcmp(t->token, "c") == 0) {
+      if (strcmp(t->token, "c") == 0 || strcmp(t->token, "client") == 0) {
          if (head == NULL) {
             head = alloc_node(ND_CLIENT);
          } else {
@@ -562,7 +584,7 @@ node_t* parse_sexp(struct string_token_t **token)
       }
 
       // Empty viewport
-      if (strcmp(t->token, "e") == 0) {
+      if (strcmp(t->token, "e") == 0 || strcmp(t->token, "empty") == 0) {
          if (head == NULL) {
             head = alloc_node(ND_CLIENT_EMPTY);
          } else {
@@ -574,7 +596,7 @@ node_t* parse_sexp(struct string_token_t **token)
       }
 
       // The rest of the clients
-      if (strcmp(t->token, "...") == 0) {
+      if (strcmp(t->token, "...") == 0 || strcmp(t->token, "rest") == 0) {
          if (head == NULL) {
             head = alloc_node(ND_REST);
          } else {
@@ -615,7 +637,7 @@ node_t* parse_sexp(struct string_token_t **token)
 
       // ==== Parameters
       // weight
-      if (strcmp(t->token, "w:") == 0 && head != NULL) {
+      if ((strcmp(t->token, "w:") == 0 || strcmp(t->token, "weight:") == 0) && head != NULL) {
          t = t->next;
 
          if (t != NULL) {
@@ -625,8 +647,19 @@ node_t* parse_sexp(struct string_token_t **token)
          continue;
       }
 
+      // margin
+      if (((strcmp(t->token, "m:") == 0) || strcmp(t->token, "margin:") == 0) && head != NULL) {
+         t = t->next;
+
+         if (t != NULL) {
+            head->margin = (unsigned) atoi(t->token);
+            t = t->next;
+         }
+         continue;
+      }
+
       // floating geometry
-      if (strcmp(t->token, "f:") == 0 && head != NULL) {
+      if ((strcmp(t->token, "f:") == 0 || strcmp(t->token, "float:") == 0) && head != NULL) {
          head->f = 1;
          t = t->next;
 
@@ -650,19 +683,19 @@ node_t* parse_sexp(struct string_token_t **token)
       }
 
       // ==== Containers
-      if (strcmp(t->token, "h") == 0 && head == NULL)
+      if ((strcmp(t->token, "h") == 0 || strcmp(t->token, "horizontal") == 0) && head == NULL)
          head = alloc_node(ND_HORIZONTAL_LR);
 
-      if (strcmp(t->token, "hr") == 0 && head == NULL)
+      if ((strcmp(t->token, "hr") == 0 || strcmp(t->token, "h-reversed") == 0) && head == NULL)
          head = alloc_node(ND_HORIZONTAL_RL);
 
-      if (strcmp(t->token, "v") == 0 && head == NULL)
+      if ((strcmp(t->token, "v") == 0 || strcmp(t->token, "vertical") == 0) && head == NULL)
          head = alloc_node(ND_VERTICAL_UD);
 
-      if (strcmp(t->token, "vr") == 0 && head == NULL)
+      if ((strcmp(t->token, "vr") == 0 || strcmp(t->token, "v-reversed") == 0) && head == NULL)
          head = alloc_node(ND_VERTICAL_UD);
 
-      if (strcmp(t->token, "m") == 0 && head == NULL)
+      if ((strcmp(t->token, "m") == 0 || strcmp(t->token, "monocle") == 0) && head == NULL)
          head = alloc_node(ND_MONOCLE);
 
       t = t->next;
