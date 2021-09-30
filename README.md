@@ -17,7 +17,7 @@ it is easier to modify, test and distribute.
 It works. More tesing is needed and I still have a few items in my TODO. In particular, it does not take window margin
 setting into account.
 
-TODO:
+TODO
 
 - [x] Add an empty frame placeholder.
 - [ ] Support for windows margin/borders.
@@ -103,6 +103,9 @@ Reversed vertical layout. Clients are filled from bottom to top.
 ## Elements
 `c`  
 A slot for a single client. 
+
+`e`
+An empty viewport. A visual space will be allocated, but no client will be assigned to it.
 
 `(nth <number>)`  
 Pick a client from the client stack by the number.
