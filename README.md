@@ -18,7 +18,6 @@ It works. More tesing is needed and I still have a few items in my TODO. In part
 setting into account.
 
 TODO
-
 - [x] Add an empty frame placeholder.
 - [ ] Support for windows margin/borders.
 - [ ] Floating configuration for the containers (h, v, m). Currently the floating mode only works for **c** element.
@@ -104,7 +103,7 @@ Reversed vertical layout. Clients are filled from bottom to top.
 `c`  
 A slot for a single client. 
 
-`e`
+`e`  
 An empty viewport. A visual space will be allocated, but no client will be assigned to it.
 
 `(nth <number>)`  
