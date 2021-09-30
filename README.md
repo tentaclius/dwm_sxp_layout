@@ -19,12 +19,12 @@ setting into account.
 
 TODO:
 
-- Support for windows margin/borders.
-- Add an empty frame placeholder.
-- Floating configuration for the containers (h, v, m). Currently the floating mode only works for **c** element.
-- Empty container to hide the leftover windows.
-- Provide a reasonable default for sxp layout.
-- Perhaps, some syntax improvements, e.g. replace `(nth ...)` with something quicker.
+- [x] Add an empty frame placeholder.
+- [ ] Support for windows margin/borders.
+- [ ] Floating configuration for the containers (h, v, m). Currently the floating mode only works for **c** element.
+- [ ] Empty container to hide the leftover windows.
+- [ ] Provide a reasonable default for sxp layout.
+- [ ] Perhaps, some syntax improvements, e.g. replace `(nth ...)` with something quicker.
 
 # Examples
 
@@ -65,7 +65,8 @@ the height of the second one.
 h (c f: 200 200 900 700) (nth 1) (m ...))
 |  |                      |       |  \_ all other clients
 |  |                      |       \_ monocle layout
-|  |                      \_ get the second client from the leftover client list (we already allocated space for one client, so (nth 1) in fact will refer to 2-nd client
+|  |                      \_ get the second client from the leftover client list (we already allocated space
+|  |                         for one client, so (nth 1) in fact will refer to 2-nd client
 |  \_ a slot for a single client with custom geometry (floating); it will not occupy the space from the parent h layout
 \_ horizontal layout
 ```  
@@ -141,7 +142,7 @@ static int restart = 0;
 ...
 ```
 
-## 3. Add the layout to the layout list in your config.h:  
+## 3. Add the layout to the layout list in your `config.h`
 ```c
 static const Layout layouts[] = {
    /* symbol     arrange function */
@@ -155,8 +156,8 @@ static const Layout layouts[] = {
 };
 ```
 
-## 4. Add hotkeys for setlayout and set_s_layout functions.
-set_s_layout will open dmenu so you can type the new layout in (don't forget to use Shift+Enter to override dmenu's hints), whereas setlayout will just switch you to the existing sxp layout.
+## 4. Add hotkeys for setlayout and `set_s_layout` functions
+`set_s_layout` will open dmenu so you can type the new layout in (don't forget to use Shift+Enter to override dmenu's hints), whereas setlayout will just switch you to the existing sxp layout.
 ```c
    ...
    { MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },

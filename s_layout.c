@@ -57,6 +57,7 @@ enum node_type_t
    ND_CLIENT_NUM,
    ND_CLIENT_NTH,
    ND_CLIENT_FLOAT,
+   ND_CLIENT_EMPTY,
    ND_REST,
 };
 
@@ -215,6 +216,15 @@ s_recur_analyze(struct client_ref_t **clients, node_t *node)
       return ret;
    }
 
+   // An empty slot.
+   if (node->type == ND_CLIENT_EMPTY) {
+      struct s_recur_analyze_ret ret;
+      ret.tail = ret.head = clone_node(node);
+      ret.tail->c = NULL;
+      ret.tail->type = ND_CLIENT;
+      return ret;
+   }
+
    // Pick n'th client from the list top.
    if (node->type == ND_CLIENT_NTH) {
       struct client_ref_t *prev = NULL;
@@ -344,10 +354,12 @@ void s_recur_resize(node_t *node, struct frame_t frame)
    if (node == NULL) return;
 
    if (node->type == ND_CLIENT) {
-      if (node->f)
-         resize(node->c, node->x, node->y, node->w, node->h, 0);
-      else
-         resize(node->c, frame.x, frame.y, frame.w, frame.h, 0);
+      if (node->c != NULL) {
+         if (node->f)
+            resize(node->c, node->x, node->y, node->w, node->h, 0);
+         else
+            resize(node->c, frame.x, frame.y, frame.w, frame.h, 0);
+      }
       return;
    }
 
@@ -549,6 +561,18 @@ node_t* parse_sexp(struct string_token_t **token)
          continue;
       }
 
+      // Empty viewport
+      if (strcmp(t->token, "e") == 0) {
+         if (head == NULL) {
+            head = alloc_node(ND_CLIENT_EMPTY);
+         } else {
+            p->next = alloc_node(ND_CLIENT_EMPTY);
+            p = p->next;
+         }
+         t = t->next;
+         continue;
+      }
+
       // The rest of the clients
       if (strcmp(t->token, "...") == 0) {
          if (head == NULL) {
@@ -586,7 +610,6 @@ node_t* parse_sexp(struct string_token_t **token)
                t = t->next;
             }
          }
-
          continue;
       }
 
