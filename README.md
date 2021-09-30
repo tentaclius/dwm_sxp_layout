@@ -19,6 +19,7 @@ setting into account.
 
 TODO
 - [x] Add an empty frame placeholder.
+- [ ] Custom window margins.
 - [ ] Support for windows margin/borders.
 - [ ] Floating configuration for the containers (h, v, m). Currently the floating mode only works for **c** element.
 - [ ] Empty container to hide the leftover windows.
