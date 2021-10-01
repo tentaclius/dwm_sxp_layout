@@ -81,6 +81,11 @@ h (c f: 200 200 1400 700) (v c c) (v c (m ...))
 A layout with the main window in the center, surrounded by four other windows.
 ![](screenshots/7.png)
 
+`m (c m: 200) (v (h c c) (h c (m ...))) `  
+Visually similar to the previous example. The master window is in the center, as it is given a margin of 200px.
+The other windows are distributed in the grid.
+![](screenshots/8.png)
+
 `h (nth 1) (nth 0)`  
 Display first two clients from the list, the first after the second.
 WARNING: In this setup the other clients will not be resized from the previous layout.
