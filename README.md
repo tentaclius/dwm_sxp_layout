@@ -123,11 +123,18 @@ Provides a space for at most `<number>` clients in a container.
 The rest of the clients from the client stack.
 
 ## Node parameters
+Note, that the colon can either be on the left or on the right side of the keyword, i.e. both variants ":weight"
+and "weight:" are valid.
+
 `w: <number>` or `weight: <number>`  
 Weight. Affects the amount of space the node takes relative to its neighbours.
 
-`f: <x> <y> <width> <height>` or `float: <x> <y> <width> <height>`  
+`f: <x> <y> <w> <h>` or `float: <x> <y> <w> <h>`  
 Custom geometry, a.k.a. floating viewport. Can be a part of any container. Does not take the container's space.
+
+`m: <number>` or `margin: <number>`  
+Margin in pixels determines the distance from the edge of the region for the node.
+Note, that the `borderpx` configuration parameter will be added to this value.
 
 # Installation and configuration
 

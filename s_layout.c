@@ -638,7 +638,8 @@ node_t* parse_sexp(struct string_token_t **token)
       // ==== Parameters
       // weight
       if ((strcmp(t->token, "w:") == 0 || strcmp(t->token, ":w") == 0
-               || strcmp(t->token, "weight:") == 0) && head != NULL) {
+               || strcmp(t->token, "weight:") == 0
+               || strcmp(t->token, ":weight") == 0) && head != NULL) {
          t = t->next;
 
          if (t != NULL) {
@@ -650,7 +651,8 @@ node_t* parse_sexp(struct string_token_t **token)
 
       // margin
       if (((strcmp(t->token, "m:") == 0) || strcmp(t->token, ":m") == 0 
-               || strcmp(t->token, "margin:") == 0) && head != NULL) {
+               || strcmp(t->token, "margin:") == 0
+               || strcmp(t->token, ":margin")) && head != NULL) {
          t = t->next;
 
          if (t != NULL) {
@@ -662,7 +664,8 @@ node_t* parse_sexp(struct string_token_t **token)
 
       // floating geometry
       if ((strcmp(t->token, "f:") == 0 || strcmp(t->token, ":f") == 0
-               || strcmp(t->token, "float:") == 0) && head != NULL) {
+               || strcmp(t->token, "float:") == 0
+               || strcmp(t->token, ":float")) && head != NULL) {
          head->f = 1;
          t = t->next;
 
