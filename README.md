@@ -49,7 +49,7 @@ h (c w: 1.5) (v c (m ...))
 |  |          \_ vertical layout node
 |  \_ a place for one client with weight of 1.5 relative to its neighbours
 \_ horizontal layout node
-```  
+```
 Tiling layout with weighted main viewport (1.5 times the neighbours).
 The stack area is limited with two clients. The leftover windows will occupy the right bottom frame.
 ![](screenshots/3.png)
@@ -57,7 +57,8 @@ The stack area is limited with two clients. The leftover windows will occupy the
 ```
 v (h w: 1.5 (c w: 1.5) c) (h (c w: 1.5) (m ...))
 |  |         |         |   |  |          |
-|  |         |         |   |  |          \_ right bottom viewport, monocle layout which contains the rest of the windows
+|  |         |         |   |  |          \_ right bottom viewport,
+|  |         |         |   |  |             monocle layout which contains the rest of the windows
 |  |         |         |   |  \_ bottom left viewport with weight of 1.5
 |  |         |         |   \_ bottom horizontal layout, default weight
 |  |         |         \_ a single client with default weight of 1
@@ -79,10 +80,6 @@ h (c f: 200 200 1400 700) (v c c) (v c (m ...))
 ```  
 A layout with the main window in the center, surrounded by four other windows.
 ![](screenshots/7.png)
-
-`h c (v (max 3) (m ...))`  
-One master + four slots in the stack area. Every other window will be stacked in the last frame.
-![](screenshots/5.png)
 
 `h (nth 1) (nth 0)`  
 Display first two clients from the list, the first after the second.
