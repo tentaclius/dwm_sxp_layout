@@ -57,8 +57,8 @@ The stack area is limited with two clients. The leftover windows will occupy the
 ```
 v (h w: 1.5 (c w: 1.5) c) (h (c w: 1.5) (m ...))
 |  |         |         |   |  |          |
-|  |         |         |   |  |          \_ right bottom viewport,
-|  |         |         |   |  |             monocle layout which contains the rest of the windows
+|  |         |         |   |  |          \_ right bottom viewport, monocle layout
+|  |         |         |   |  |             which contains the rest of the windows
 |  |         |         |   |  \_ bottom left viewport with weight of 1.5
 |  |         |         |   \_ bottom horizontal layout, default weight
 |  |         |         \_ a single client with default weight of 1
