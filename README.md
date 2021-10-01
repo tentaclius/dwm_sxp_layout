@@ -83,7 +83,7 @@ A layout with the main window in the center, surrounded by four other windows.
 
 `h (nth 1) (nth 0)`  
 Display first two clients from the list, the first after the second.
-WARNING: In this setup the other clients will be left untouched from the 
+WARNING: In this setup the other clients will not be resized from the previous layout.
 ![](screenshots/6.png)
 
 # Syntax
