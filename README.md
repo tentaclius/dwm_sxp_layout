@@ -34,12 +34,15 @@ Here are some text examples.
 
 `h c (v ...)`  
 Simple tile layout.
+![](screenshots/1.png)
 
 `m ...`  
 Monocle.
+![](screenshots/2.png)
 
 ```
 h (c w: 1.5) (v c (m ...))
+|  |          | |  |  |
 |  |          | |  |  \_ all the leftover windows will be put here
 |  |          | |  \_ monocle node (all windows under it will occupy the same frame)
 |  |          | \_ single client 
@@ -49,6 +52,7 @@ h (c w: 1.5) (v c (m ...))
 ```  
 Tiling layout with weighted main viewport (1.5 times the neighbours).
 The stack area is limited with two clients. The leftover windows will occupy the right bottom frame.
+![](screenshots/3.png)
 
 ```
 v (h w: 1.5 (c w: 1.5) c) (h (c w: 1.5) (m ...))
@@ -63,26 +67,27 @@ v (h w: 1.5 (c w: 1.5) c) (h (c w: 1.5) (m ...))
 ```
 My personal favorit. Arranges the windows in a kind of a grid 2x2 where the left column and the upper row are 1.5 times
 wider/higher.
+![](screenshots/4.png)
 
 ```
-h (c f: 200 200 900 700) (nth 1) (m ...))
-|  |                      |       |  \_ all other clients
-|  |                      |       \_ monocle layout
-|  |                      \_ get the second client from the leftover client list (we already allocated space
-|  |                         for one client, so (nth 1) in fact will refer to 2-nd client
-|  \_ a slot for a single client with custom geometry (floating); it will not occupy the space from the parent h layout
-\_ horizontal layout
+h (c f: 200 200 1400 700) (v c c) (v c (m ...))
+|  |                       |       |
+|  |                       |       \_ another vertical container with two slots.
+|  |                       \_ vertical container with two slots
+|  \_ a viewport with a custom geometry, it will not take space from the parent horizontal layout
+\_ horizontal layout container
 ```  
-
-`v ...`  
-All clients arranged in a single column.
+A layout with the main window in the center, surrounded by four other windows.
+![](screenshots/7.png)
 
 `h c (v (max 3) (m ...))`  
 One master + four slots in the stack area. Every other window will be stacked in the last frame.
+![](screenshots/5.png)
 
 `h (nth 1) (nth 0)`  
 Display first two clients from the list, the first after the second.
 WARNING: In this setup the other clients will be left untouched from the 
+![](screenshots/6.png)
 
 # Syntax
 ## Containers
@@ -181,10 +186,10 @@ static const Layout layouts[] = {
 
 Playing around with simple layouts.
 
-![](Screencast-1.gif)
+![](screenshots/Screencast-1.gif)
 
 # Screencast 2
 
 Creating a floating viewport.
 
-![](Screencast-2.gif)
+![](screenshots/Screencast-2.gif)
