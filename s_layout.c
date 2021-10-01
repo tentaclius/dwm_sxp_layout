@@ -708,15 +708,27 @@ node_t* parse_sexp(struct string_token_t **token)
    return head;
 }
 
-#define SXP_HISTORY "/tmp/.dwm_sxp_history"
+#define SXP_HISTORY ".dwm_sxp_history"
 void set_s_layout(const Arg *arg)
 {
-   // make sure the history file exists
-   FILE *hf = fopen(SXP_HISTORY, "a"); fclose(hf);
-   system("sort " SXP_HISTORY " | uniq > " SXP_HISTORY "~");
-   system("mv " SXP_HISTORY "~ " SXP_HISTORY);
+   FILE *pp, *hf;
 
-   FILE *pp = popen("dmenu -i -l 10 -p 'sxp>' <" SXP_HISTORY, "r");
+   char pathbuf[1024];
+   char *home = getenv("HOME");
+   if (home != NULL) {
+      snprintf(pathbuf, 1023, "%s/" SXP_HISTORY, home);
+      pathbuf[1023] = '\0';
+      
+      // make sure the history file exists
+      hf = fopen(SXP_HISTORY, "a"); fclose(hf);
+      system("sort " SXP_HISTORY " | uniq > " SXP_HISTORY "~");
+      system("mv " SXP_HISTORY "~ " SXP_HISTORY);
+
+      pp = popen("dmenu -i -l 10 -p 'sxp>' <" SXP_HISTORY, "r");
+   } else {
+      pp = popen("dmenu -i -l 10 -p 'sxp>'", "r");
+   }
+
    if (!pp) return;
    char buf[1024 + 1];
    buf[1024] = '\0';

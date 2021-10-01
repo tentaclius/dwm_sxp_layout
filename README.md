@@ -21,8 +21,9 @@ TODO
 - [x] Add an empty frame placeholder.
 - [x] Support for windows margin/borders.
 - [x] Custom window margins.
-- [ ] Floating configuration for the containers (h, v, m). Currently the floating mode only works for **c** element.
 - [ ] Void container to hide the leftover windows.
+- [ ] Make it possible to apply attributes to multi-client patterns, like (nth) and (...)
+- [ ] Floating configuration for the containers (h, v, m). Currently the floating mode only works for **c** element.
 - [ ] Provide a reasonable default for sxp layout.
 - [ ] Perhaps, some syntax improvements, e.g. replace `(nth ...)` with something quicker.
 
