@@ -51,16 +51,18 @@ Tiling layout with weighted main viewport (1.5 times the neighbours).
 The stack area is limited with two clients. The leftover windows will occupy the right bottom frame.
 
 ```
-h (v w: 1.2 (c w: 1.2) c) (v ...)
-|  |         |         |   |  \_ all the leftover clients goes here
-|  |         |         |   \_ vertical node
-|  |         |         \_ another client (default weight is 1)
-|  |         \_ a single client with weight of 1.2
-|  \_ vertical node with weight of 1.2 (relative to its neighbours from the horizontal parent node)
-\_ horizontal distribution node
-```  
-Two windows in the master area. The master column is 1.2 times width the stack column and the first window is 1.2 times
-the height of the second one.
+v (h w: 1.5 (c w: 1.5) c) (h (c w: 1.5) (m ...))
+|  |         |         |   |  |          |
+|  |         |         |   |  |          \_ right bottom viewport, monocle layout which contains the rest of the windows
+|  |         |         |   |  \_ bottom left viewport with weight of 1.5
+|  |         |         |   \_ bottom horizontal layout, default weight
+|  |         |         \_ a single client with default weight of 1
+|  |         \_ a upper left viewport for a single client with 1.5 weight
+|  \_ horizontal layout with weight of 1.5
+\_ vertical layout
+```
+My personal favorit. Arranges the windows in a kind of a grid 2x2 where the left column and the upper row are 1.5 times
+wider/higher.
 
 ```
 h (c f: 200 200 900 700) (nth 1) (m ...))
