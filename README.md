@@ -21,11 +21,11 @@ TODO
 - [x] Add an empty frame placeholder.
 - [x] Support for windows margin/borders.
 - [x] Custom window margins.
+- [x] Replace `(nth ...)` with a quicker version. New syntax: just a number.
 - [ ] Void container to hide the leftover windows.
 - [ ] Make it possible to apply attributes to multi-client patterns, like (nth) and (...)
 - [ ] Floating configuration for the containers (h, v, m). Currently the floating mode only works for **c** element.
 - [ ] Provide a reasonable default for sxp layout.
-- [ ] Perhaps, some syntax improvements, e.g. replace `(nth ...)` with something quicker.
 
 # Examples
 
@@ -81,12 +81,12 @@ h (c f: 200 200 1400 700) (v c c) (v c (m ...))
 A layout with the main window in the center, surrounded by four other windows.
 ![](screenshots/7.png)
 
-`m (c m: 200) (v (h c c) (h c (m ...))) `  
+`m (c m: 200) (v (h c c) (h c (m ...)))`  
 Visually similar to the previous example. The master window is in the center, as it is given a margin of 200px.
 The other windows are distributed in the grid.
 ![](screenshots/8.png)
 
-`h (nth 1) (nth 0)`  
+`h 1 0`  
 Display first two clients from the list, the first after the second.
 WARNING: In this setup the other clients will not be resized from the previous layout.
 ![](screenshots/6.png)
@@ -117,9 +117,9 @@ A slot for a single client.
 `e` or `empty`  
 An empty viewport. A visual space will be allocated, but no client will be assigned to it.
 
-`(nth <number>)`  
+`<number>`  
 Pick a client from the client stack by the number.
-`(nth 0)` represents the first client, `(nth 1)` - the second etc.
+`0` represents the first client, `1` - the second etc.
 
 `(max <number>)`  
 Provides a space for at most `<number>` clients in a container.

@@ -51,6 +51,7 @@ enum node_type_t
    ND_HORIZONTAL_RL,
    ND_VERTICAL_UD,
    ND_VERTICAL_DU,
+   ND_VOID,
 
    // Elements
    ND_CLIENT,
@@ -118,6 +119,15 @@ int is_nested(node_t *node)
        || node->type == ND_VERTICAL_UD
        || node->type == ND_VERTICAL_DU
        || node->type == ND_MONOCLE;
+}
+
+int is_terminal(char c)
+{
+   return c == ' '
+       || c == '\t'
+       || c == '('
+       || c == ')'
+       || c == '\0';
 }
 
 void free_node(node_t *node)
@@ -608,16 +618,19 @@ node_t* parse_sexp(struct string_token_t **token)
       }
       
       // N'th client
-      if (strcmp(t->token, "nth") == 0) {
+      unsigned long n = 0;
+      char *endp = NULL;
+      n = strtoul(t->token, &endp, 10);
+      if (is_terminal(*endp)) {
          if (head == NULL) {
             head = alloc_node(ND_CLIENT_NTH);
-
-            t = t->next;
-            if (t != NULL) {
-               head->n = (unsigned) atoi(t->token);
-               t = t->next;
-            }
+            head->n = n;
+         } else {
+            p->next = alloc_node(ND_CLIENT_NTH);
+            p->next->n = n;
+            p = p->next;
          }
+         t = t->next;
          continue;
       }
 
