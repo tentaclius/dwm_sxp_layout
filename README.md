@@ -22,6 +22,8 @@ TODO
 - [x] Support for windows margin/borders.
 - [x] Custom window margins.
 - [x] Replace `(nth ...)` with a quicker version. New syntax: just a number.
+- [ ] Add a pattern to choose a client window by class (class "regexp")
+- [ ] Assign weight by class: `(apply class: <class> w: <weight>)`; or by title: `(apply title: <title> w: <weight>)`.
 - [ ] Void container to hide the leftover windows.
 - [ ] Make it possible to apply attributes to multi-client patterns, like (nth) and (...)
 - [ ] Floating configuration for the containers (h, v, m). Currently the floating mode only works for **c** element.
@@ -140,6 +142,9 @@ Custom geometry, a.k.a. floating viewport. Can be a part of any container. Does 
 `m: <number>` or `margin: <number>`  
 Margin in pixels determines the distance from the edge of the region for the node.
 Note, that the `borderpx` configuration parameter will be added to this value.
+
+## Comments
+Semicolon starts a comment. The comment is useful to keep track of your layouts in the history.
 
 # Installation and configuration
 

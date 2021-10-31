@@ -57,6 +57,7 @@ enum node_type_t
    ND_CLIENT,
    ND_CLIENT_NUM,
    ND_CLIENT_NTH,
+   ND_CLIENT_CLASS,
    ND_CLIENT_FLOAT,
    ND_CLIENT_EMPTY,
    ND_REST,
@@ -71,7 +72,9 @@ struct node_t
    int f;
    unsigned n;
    unsigned margin;
+   char *s;
    Client *c;
+
    struct node_t *branch;
    struct node_t *next;
 };
@@ -106,6 +109,7 @@ node_t* clone_node(node_t *n)
    node->f = n->f;
    node->n = n->n;
    node->margin = n->margin;
+   node->s = n->s;
    node->c = n->c;
    node->next = NULL;
    node->branch = NULL;
@@ -140,6 +144,7 @@ void free_node(node_t *node)
 
       node_t *ns = n->next;
 
+      if (n->s) free(n->s);
       free(n);
       n = ns;
    }
@@ -245,7 +250,7 @@ s_recur_analyze(struct client_ref_t **clients, node_t *node)
 
       for ( i = 0, c = *clients;
             i < node->n && c != NULL;
-            i ++, c = c->next) 
+            i ++, c = c->next)
       {
          prev = c;
       }
@@ -259,6 +264,17 @@ s_recur_analyze(struct client_ref_t **clients, node_t *node)
          ret.tail = ret.head = clone_node(node);
          ret.head->type = ND_CLIENT;
          ret.head->c = c->c;
+      }
+
+      return ret;
+   }
+
+   if (node->type == ND_CLIENT_CLASS) {
+      //struct client_ref_t *prev = NULL;
+      struct s_recur_analyze_ret ret;
+
+      for ( c = *clients; c != NULL; c = c->next) {
+         // TODO get class and compare to the pattern.
       }
 
       return ret;
@@ -474,33 +490,40 @@ void s_layout(Monitor *m)
    free_node(ret.head);
 }
 
-enum s_char_type_t {
-   SC_SPACE,
-   SC_WORD,
-   SC_PAREN,
-   SC_EOF,
-};
-
-enum s_char_type_t
-char_type(char c)
-{
-   if (c == ' ' || c == '\t' || c == '\n')
-      return SC_SPACE;
-
-   if (c == '(' || c == ')')
-      return SC_PAREN;
-
-   if (c == '\0')
-      return SC_EOF;
-
-   return SC_WORD;
-}
-
 // Tokenize string
+typedef struct string_token_t string_token_t;
 struct string_token_t {
-   char token[8];
+   char token[32];
    struct string_token_t *next;
 };
+
+string_token_t* parse_string(char *str, unsigned *i)
+{
+   unsigned char escape = 0;
+   unsigned j = 0;
+   string_token_t *ret = (string_token_t*) malloc(sizeof(string_token_t));
+   ret->next = NULL;
+
+   while (str[*i] != '\0' && j < sizeof(ret->token) - 1) {
+      if (str[*i] == '\\' && !escape) {
+         escape = 1;
+         (*i) ++;
+         continue;
+      }
+
+      if (str[*i] == '"' && !escape) {
+         break;
+      }
+
+      ret->token[j++] = str[(*i)++];
+      escape = 0;
+   }
+   ret->token[j] = '\0';
+
+   if (str[*i] == '\0')
+      (*i) --;
+   return ret;
+}
 
 struct string_token_t* tokenize_string(char *str)
 {
@@ -511,20 +534,34 @@ struct string_token_t* tokenize_string(char *str)
    unsigned len = 0;
 
    for (unsigned i = 0;; i ++) {
-      switch (char_type(str[i])) {
-         case SC_EOF:
+      switch (str[i]) {
+         // End of line
+         case '\0':
             if (word_start != UINT_MAX) {
                node->next = (struct string_token_t*) malloc(sizeof(struct string_token_t));
                node = node->next;
                node->next = NULL;
+
                len = MIN(i - word_start, sizeof(node->token) - 1);
                strncpy(node->token, &str[word_start], len);
                node->token[len] = '\0';
             }
             return head.next;
 
-         case SC_SPACE:
-         case SC_PAREN:
+         // Comment
+         case ';':
+            return head.next;
+
+         // Beginning of a string
+         case '"':
+            node->next = parse_string(str, &i);
+            if (node->next) node = node->next;
+
+         // Space or paren
+         case ' ':
+         case '\t':
+         case '(':
+         case ')':
             if (word_start != UINT_MAX) {
                node->next = (struct string_token_t*) malloc(sizeof(struct string_token_t));
                node = node->next;
@@ -534,7 +571,7 @@ struct string_token_t* tokenize_string(char *str)
                node->token[len] = '\0';
                word_start = UINT_MAX;
             }
-            if (char_type(str[i]) == SC_PAREN) {
+            if (str[i] == '(' || str[i] == ')') {
                node->next = (struct string_token_t*) malloc(sizeof(struct string_token_t));
                node = node->next;
                node->next = NULL;
@@ -543,6 +580,7 @@ struct string_token_t* tokenize_string(char *str)
             }
             break;
 
+         // A piece of a word
          default:
             if (word_start == UINT_MAX)
                word_start = i;
@@ -552,13 +590,13 @@ struct string_token_t* tokenize_string(char *str)
 }
 
 // Parse s-expression to node_t structure
-node_t* parse_sexp(struct string_token_t **token)
+node_t* parse_sexp(string_token_t **token)
 {
    node_t *head = NULL;
    node_t branch, *p = &branch;
    branch.next = NULL;
 
-   struct string_token_t *t = *token;
+   string_token_t *t = *token;
 
    while (t != NULL) {
       if (strcmp(t->token, ")") == 0) {
@@ -612,6 +650,26 @@ node_t* parse_sexp(struct string_token_t **token)
          } else {
             p->next = alloc_node(ND_REST);
             p = p->next;
+         }
+         t = t->next;
+         continue;
+      }
+
+      // Choose the client by class
+      if (strcmp(t->token, "class") == 0) {
+         if (head == NULL) {
+            head = alloc_node(ND_CLIENT_CLASS);
+            if (t->next) {
+               t = t->next;
+               head->s = strdup(t->token);
+            }
+         } else {
+            p->next = alloc_node(ND_CLIENT_CLASS);
+            p = p->next;
+            if (t->next) {
+               t = t->next;
+               p->s = strdup(t->token);
+            }
          }
          t = t->next;
          continue;
